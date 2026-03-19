@@ -1,11 +1,11 @@
-🥷 OPSEC Hardening & Stealth Guide
+#🥷 OPSEC Hardening & Stealth Guide
 Version: 2.0 (2026 Enhanced Edition)
 Target OS: Kali Linux / Debian-based
 Author: Professional Red Team Reference
 
 This comprehensive guide transforms your penetration testing environment into an invisible, forensically-clean operation platform. Every command is battle-tested for real-world engagements.
 
-📚 Table of Contents
+###📚 Table of Contents
 System Hardening
 
 Network Stealth
@@ -28,10 +28,12 @@ Quick Reference Cards
 
 Complete Verification
 
-🛠️ 1. System Hardening (The Foundation)
+---
+
+##🛠️ 1. System Hardening (The Foundation)
 Before connecting to any network, ensure the OS is silent and secure.
 
-bash
+```bash
 # Run Kernel Security Check
 sudo apt update && sudo apt install linux-kernel-hardening-checker -y
 kernel-hardening-checker
@@ -63,11 +65,16 @@ sudo systemctl restart sshd
 if ! grep -q "^tmpfs /run/shm" /etc/fstab; then
     echo "tmpfs /run/shm tmpfs defaults,noexec,nosuid 0 0" | sudo tee -a /etc/fstab
 fi
-🌐 2. Network Stealth (Speed + Invisibility)
+```
+
+---
+
+##🌐 2. Network Stealth (Speed + Invisibility)
 Balance anonymity with the stability required for active operations.
 
 The "Speed" Setup (Exploitation Phase)
-bash
+
+```bash
 # Install WireGuard for Low-Latency VPN
 sudo apt install wireguard resolvconf -y
 
@@ -97,10 +104,14 @@ Mode	Command	Use Case
 VPN	sudo wg-quick up mullvad-us1	Exploitation, scanning
 Tor	sudo perl nipe.pl start	Recon, OSINT, anonymity
 Proxy	proxychains4 nmap -sT target	Tool-specific routing
+```
+
+---
+
 🌍 3. Protocol & DNS Hardening
 Prevent leakage of identifying information through network protocols.
 
-bash
+```bash
 # Comprehensive Network Hardening
 sudo tee -a /etc/sysctl.conf << 'EOF'
 # IPv6 Complete Disable
@@ -182,11 +193,16 @@ dnsleaktest() {
     echo "[*] Monitoring DNS traffic (5 sec):"
     sudo timeout 5 tcpdump -i any port 53 -c 5 2>/dev/null
 }
-🔒 4. MAC Address & Identity Management
+```
+
+---
+
+##🔒 4. MAC Address & Identity Management
 Spoof hardware identifiers and randomize system identity.
 
 MAC Spoofing Service
-bash
+
+```bash
 # Install Tools
 sudo apt install macchanger net-tools ethtool -y
 
@@ -236,11 +252,16 @@ check_identity() {
     echo "Machine ID: $(cat /etc/machine-id 2>/dev/null | cut -c1-8)..."
     echo "Timezone: $(timedatectl | grep "Time zone" | awk '{print $3}')"
 }
-🕵️ 5. Browser & Fingerprinting Hardening
+```
+
+---
+
+##🕵️ 5. Browser & Fingerprinting Hardening
 Eliminate browser-based tracking and canvas fingerprinting.
 
 Hardened Firefox Profile
-bash
+
+```bash
 # Create OSINT Profile
 firefox -CreateProfile "OSINT-Profile" 2>/dev/null || true
 
@@ -298,10 +319,12 @@ chromium --temp-profile \
 trap "rm -rf $TEMP_PROFILE" EXIT
 EOF
 sudo chmod +x /usr/local/bin/chromium-osint
-📂 6. Metadata & Artifact Sanitization
+```
+
+##📂 6. Metadata & Artifact Sanitization
 Remove identifying information from all files before deployment.
 
-bash
+```bash
 # Install Tools
 sudo apt install mat2 exiftool wipe secure-delete -y
 
@@ -334,7 +357,7 @@ secure_wipe() {
     done
 }
 Artifact Cleaning Command
-bash
+```bash
 opsec_clean() {
     echo "[*] Cleaning artifacts..."
     
@@ -357,6 +380,10 @@ opsec_clean() {
     
     echo "[✓] Cleanup complete"
 }
+```
+
+---
+
 📦 7. Containerization & Isolation
 Use containers for clean-slate operations with zero host artifacts.
 
