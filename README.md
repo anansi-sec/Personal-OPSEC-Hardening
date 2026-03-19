@@ -119,23 +119,41 @@ ss -tuln
 ```
 ---
 
-## ✅ Verification Section (Continued)
+## ✅ Verification Section
+
+Confirm your "Invisible" status before touching the target network. Run these commands to verify all hardening measures are active:
 
 ```bash
-# Check active connections
+# Verify MAC address change
+ip a | grep -A 1 ether
+
+# Verify hostname change
+hostname
+
+# Verify IPv6 is disabled
+sysctl net.ipv6.conf.all.disable_ipv6
+ip a | grep inet6
+
+# Verify network interfaces
+ip a
+
+# Check for listening ports (minimize these!)
 ss -tuln
 ```
+
+---
 
 ## 📋 Quick Reference Card
 
 | Action | Command | Verification |
 |--------|---------|--------------|
-| **Spoof MAC** | `sudo macchanger -r eth0` | `ip a \| grep ether` |
+| **Spoof MAC** | `sudo macchanger -r eth0` | `ip a \| grep -A 1 ether` |
 | **Change Hostname** | `sudo hostnamectl set-hostname NEW` | `hostname` |
-| **Disable IPv6** | `sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1` | `ip a \| grep inet6` |
+| **Disable IPv6** | `sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1` | `sysctl net.ipv6.conf.all.disable_ipv6` |
 | **Clear History** | `history -c && history -w` | `history` |
-| **Run Full Hardening** | `sudo ./harden.sh` | Run verification commands |
----
+| **Run Full Hardening** | `sudo ./harden.sh` | Run all verification commands above |
+
+> **💡 Pro Tip:** Run verification commands **before** connecting to the target network to ensure you're truly invisible.
 
 > **⚠️ Legal Disclaimer**
 > 
