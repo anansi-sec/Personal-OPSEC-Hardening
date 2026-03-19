@@ -40,9 +40,78 @@ Run these commands immediately upon booting your Kali instance:
 # Replace eth0 with your active interface (e.g., wlan0)
 sudo macchanger -r eth0
 
-# B. Change Hostname
+### B. Change Hostname
 sudo hostnamectl set-hostname Workstation-01
 
-# C. Disable IPv6
+### C. Disable IPv6
 sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
 sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
+
+---
+
+## 🖥️ Automated Hardening Script
+Take the guesswork out of your OPSEC routine with the included harden.sh script. Execute your entire hardening checklist with a single command upon booting:
+
+# Make the script executable
+chmod +x harden.sh
+
+# Run the complete hardening process
+sudo ./harden.sh
+
+The script automates MAC spoofing, hostname changes, IPv6 disabling, and all other hardening steps to ensure consistency across engagements.
+
+💾 Persistence Guide
+The sysctl -w commands reset after reboot. Make your stealth configurations permanent by adding the following to /etc/sysctl.conf:
+
+# Add to /etc/sysctl.conf for permanent IPv6 disabling
+echo "net.ipv6.conf.all.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.conf
+echo "net.ipv6.conf.default.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.conf
+
+# Apply changes
+sudo sysctl -p
+
+This ensures you remain protected even if you forget to run the commands after a restart.
+
+🧹 Artifact Cleaning
+A key part of being an "Invisible Operator" is knowing how to clear your tracks before logging off:
+
+# Clear bash history
+history -c && history -w
+
+# Securely delete temporary files
+shred -zvu /tmp/* 2>/dev/null
+shred -zvu ~/.bash_history
+
+# Wipe system logs (use with caution)
+sudo journalctl --rotate
+sudo journalctl --vacuum-time=1s
+
+✅ Verification Section
+Confirm your "Invisible" status before touching the target network:
+
+# Verify MAC address change
+ip a | grep -A 1 ether
+
+# Verify hostname change
+hostname
+
+# Verify IPv6 is disabled
+sysctl net.ipv6.conf.all.disable_ipv6
+ip a | grep inet6
+
+# Verify network interfaces
+ip a
+
+# Check active connections
+ss -tuln
+
+| Action | Command | Verification |
+|--------|---------|--------------|
+| **Spoof MAC** | `sudo macchanger -r eth0` | `ip a \| grep ether` |
+| **Change Hostname** | `sudo hostnamectl set-hostname NEW` | `hostname` |
+| **Disable IPv6** | `sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1` | `ip a \| grep inet6` |
+| **Clear History** | `history -c && history -w` | `history` |
+| **Run Full Hardening** | `sudo ./harden.sh` | Run verification commands |
+
+⚠️ Legal Disclaimer
+This guide is intended for educational purposes and authorized security testing only. Always ensure you have proper permission before testing or hardening any system you do not own. The authors are not responsible for misuse or illegal activities conducted with this information.
