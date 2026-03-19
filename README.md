@@ -1,4 +1,4 @@
-#🥷 OPSEC Hardening & Stealth Guide
+# 🥷 OPSEC Hardening & Stealth Guide
 > **Version:** 1.0 (2026 Reference)  
 > **Target OS:** Kali Linux / Debian-based
 
