@@ -36,11 +36,13 @@ Balance anonymity with the stability required for active exploitation.
 Run these commands immediately upon booting your Kali instance:
 
 ### A. Spoof MAC Address
-```bash
+
 # Replace eth0 with your active interface (e.g., wlan0)
 sudo macchanger -r eth0
 
+# B. Change Hostname
 sudo hostnamectl set-hostname Workstation-01
 
+# C. Disable IPv6
 sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
 sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
