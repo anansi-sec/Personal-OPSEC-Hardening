@@ -95,6 +95,7 @@ shred -zvu ~/.bash_history
 sudo journalctl --rotate
 sudo journalctl --vacuum-time=1s
 ```
+---
 
 ## ✅ Verification Section
 
@@ -117,30 +118,6 @@ ip a
 # Check active connections
 ss -tuln
 ```
----
-
-## ✅ Verification Section
-
-Confirm your "Invisible" status before touching the target network. Run these commands to verify all hardening measures are active:
-
-```bash
-# Verify MAC address change
-ip a | grep -A 1 ether
-
-# Verify hostname change
-hostname
-
-# Verify IPv6 is disabled
-sysctl net.ipv6.conf.all.disable_ipv6
-ip a | grep inet6
-
-# Verify network interfaces
-ip a
-
-# Check for listening ports (minimize these!)
-ss -tuln
-```
-
 ---
 
 ## 📋 Quick Reference Card
