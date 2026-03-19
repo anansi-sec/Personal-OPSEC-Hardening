@@ -1,52 +1,57 @@
-# 🥷 OPSEC Hardening & Stealth Guide
-> **Version:** 1.0 (2026 Reference)  
+# OPSEC Hardening & Stealth Guide
+
+> **Version:** 1.0 (2026 Reference)
 > **Target OS:** Kali Linux / Debian-based
 
 This repository serves as a personal reference for hardening a penetration testing environment to remain invisible and maintain high-speed connectivity during engagements.
 
----
-
 ## 🛠️ 1. System Hardening (The Foundation)
+
 Before connecting to any network, ensure the OS is silent and secure.
 
-- [ ] **Run Kernel Check:** Use [kernel-hardening-checker](https://github.com/a13xp0p0v/kernel-hardening-checker) to verify KSPP alignment.
-- [ ] **Apply Debian Hardening:** Utilize [Debian-Hardening](https://github.com/ovh/debian-hardening) scripts for AppArmor profiles.
-- [ ] **Silence Broadcasts:** Disable `Avahi` and `mDNS` to prevent local discovery.
+- **Run Kernel Check:** Use [kernel-hardening-checker](https://github.com/a13xp0p0v/kernel-hardening-checker) to verify KSPP alignment.
+- **Apply Debian Hardening:** Utilize [Debian-Hardening](https://github.com/ovh/debian-hardening) scripts for AppArmor profiles.
+- **Silence Broadcasts:** Disable `Avahi` and `mDNS` to prevent local discovery.
 
 ## 🌐 2. Network Stealth (Speed + Invisibility)
+
 Balance anonymity with the stability required for active exploitation.
 
 ### The "Speed" Setup (Exploitation Phase)
-*   **Protocol:** Use **WireGuard** (via Mullvad or ProtonVPN) for low latency.
-*   **Tool:** [ProxyChains-ng](https://github.com/rofl0r/proxychains-ng).
-*   **Config:** Set to `dynamic_chain` in `/etc/proxychains4.conf` to avoid connection drops.
+- **Protocol:** Use **WireGuard** (via Mullvad or ProtonVPN) for low latency.
+- **Tool:** [ProxyChains-ng](https://github.com/rofl0r/proxychains-ng).
+- **Config:** Set to `dynamic_chain` in `/etc/proxychains4.conf` to avoid connection drops.
 
 ### The "Ghost" Setup (Recon/OSINT Phase)
-*   **Tool:** [Nipe](https://github.com/htrgouvea/nipe).
-*   **Function:** Routes all traffic through Tor. 
-*   *Note: Switch back to VPN before launching heavy exploits.*
+- **Tool:** [Nipe](https://github.com/htrgouvea/nipe).
+- **Function:** Routes all traffic through Tor.
+- **Note:** Switch back to VPN before launching heavy exploits.
 
 ## 📂 3. Operational Security (OPSEC) Repos
+
 - **Infrastructure:** [Awesome-Red-Teaming](https://github.com/yeyintminthuhtut/Awesome-Red-Teaming) - Focus on *Cloud Redirectors*.
 - **Evasion:** [CheckPlease](https://github.com/p3nt3st/CheckPlease) - Use for sandbox-aware payloads.
 
----
-
 ## 🚀 4. "Invisible Operator" Quick-Start
+
 Run these commands immediately upon booting your Kali instance:
 
 ### A. Spoof MAC Address
-
-### Replace eth0 with your active interface (e.g., wlan0)
+```bash
+# Replace eth0 with your active interface (e.g., wlan0)
 sudo macchanger -r eth0
+```
 
 ### B. Change Hostname
+```bash
 sudo hostnamectl set-hostname Workstation-01
+```
 
 ### C. Disable IPv6
+```bash
 sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
 sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
-
+```
 ---
 
 ## 🖥️ Automated Hardening Script
@@ -64,6 +69,7 @@ sudo ./harden.sh
 ## 💾 Persistence Guide
 The `sysctl -w` commands reset after reboot. Make your stealth configurations permanent by adding the following to `/etc/sysctl.conf`:
 
+```bash
 # Add to /etc/sysctl.conf for permanent IPv6 disabling
 echo "net.ipv6.conf.all.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.conf
 echo "net.ipv6.conf.default.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.conf
@@ -71,7 +77,7 @@ echo "net.ipv6.conf.default.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.conf
 # Apply changes
 sudo sysctl -p
 ```
-
+---
 
 ## 🧹 Artifact Cleaning
 
@@ -94,23 +100,34 @@ sudo journalctl --vacuum-time=1s
 
 Confirm your "Invisible" status before touching the target network:
 
-### Verify MAC address change
+```bash
+# Verify MAC address change
 ip a | grep -A 1 ether
 
-### Verify hostname change
+# Verify hostname change
 hostname
 
-### Verify IPv6 is disabled
+# Verify IPv6 is disabled
 sysctl net.ipv6.conf.all.disable_ipv6
 ip a | grep inet6
 
-### Verify network interfaces
+# Verify network interfaces
 ip a
 
+# Check active connections
+ss -tuln
+```
 ---
 
-## Check active connections
+## ✅ Verification Section (Continued)
+
+```bash
+# Check active connections
 ss -tuln
+```
+
+## 📋 Quick Reference Card
+
 | Action | Command | Verification |
 |--------|---------|--------------|
 | **Spoof MAC** | `sudo macchanger -r eth0` | `ip a \| grep ether` |
@@ -118,7 +135,6 @@ ss -tuln
 | **Disable IPv6** | `sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1` | `ip a \| grep inet6` |
 | **Clear History** | `history -c && history -w` | `history` |
 | **Run Full Hardening** | `sudo ./harden.sh` | Run verification commands |
-
 ---
 
 > **⚠️ Legal Disclaimer**
