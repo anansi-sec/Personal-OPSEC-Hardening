@@ -50,7 +50,8 @@ sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
 ---
 
 ## 🖥️ Automated Hardening Script
-Take the guesswork out of your OPSEC routine with the included harden.sh script. Execute your entire hardening checklist with a single command upon booting:
+
+Take the guesswork out of your OPSEC routine with the included `harden.sh` script. Execute your entire hardening checklist with a single command upon booting:
 
 # Make the script executable
 chmod +x harden.sh
@@ -58,10 +59,11 @@ chmod +x harden.sh
 # Run the complete hardening process
 sudo ./harden.sh
 
-The script automates MAC spoofing, hostname changes, IPv6 disabling, and all other hardening steps to ensure consistency across engagements.
+---
 
-💾 Persistence Guide
-The sysctl -w commands reset after reboot. Make your stealth configurations permanent by adding the following to /etc/sysctl.conf:
+## 💾 Persistence Guide
+
+The `sysctl -w` commands reset after reboot. Make your stealth configurations permanent by adding the following to `/etc/sysctl.conf`:
 
 # Add to /etc/sysctl.conf for permanent IPv6 disabling
 echo "net.ipv6.conf.all.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.conf
@@ -69,9 +71,6 @@ echo "net.ipv6.conf.default.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.conf
 
 # Apply changes
 sudo sysctl -p
-
-This ensures you remain protected even if you forget to run the commands after a restart.
-
 🧹 Artifact Cleaning
 A key part of being an "Invisible Operator" is knowing how to clear your tracks before logging off:
 
@@ -86,7 +85,10 @@ shred -zvu ~/.bash_history
 sudo journalctl --rotate
 sudo journalctl --vacuum-time=1s
 
-✅ Verification Section
+---
+
+## ✅ Verification Section
+
 Confirm your "Invisible" status before touching the target network:
 
 # Verify MAC address change
@@ -102,9 +104,10 @@ ip a | grep inet6
 # Verify network interfaces
 ip a
 
+---
+
 # Check active connections
 ss -tuln
-
 | Action | Command | Verification |
 |--------|---------|--------------|
 | **Spoof MAC** | `sudo macchanger -r eth0` | `ip a \| grep ether` |
@@ -113,5 +116,10 @@ ss -tuln
 | **Clear History** | `history -c && history -w` | `history` |
 | **Run Full Hardening** | `sudo ./harden.sh` | Run verification commands |
 
-⚠️ Legal Disclaimer
-This guide is intended for educational purposes and authorized security testing only. Always ensure you have proper permission before testing or hardening any system you do not own. The authors are not responsible for misuse or illegal activities conducted with this information.
+---
+
+> **⚠️ Legal Disclaimer**
+> 
+> This guide is intended for **educational purposes** and **authorized security testing only**. Always ensure you have proper written permission before testing or hardening any system you do not own. The authors are not responsible for misuse, illegal activities, or any damages resulting from the use of this information.
+> 
+> *By using this guide, you acknowledge that you are solely responsible for complying with all applicable local, state, and federal laws.*
