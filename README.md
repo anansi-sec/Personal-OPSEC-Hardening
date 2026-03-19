@@ -37,7 +37,7 @@ Run these commands immediately upon booting your Kali instance:
 
 ### A. Spoof MAC Address
 
-# Replace eth0 with your active interface (e.g., wlan0)
+### Replace eth0 with your active interface (e.g., wlan0)
 sudo macchanger -r eth0
 
 ### B. Change Hostname
