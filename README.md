@@ -53,10 +53,10 @@ sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
 
 Take the guesswork out of your OPSEC routine with the included `harden.sh` script. Execute your entire hardening checklist with a single command upon booting:
 
-# Make the script executable
+### Make the script executable
 chmod +x harden.sh
 
-# Run the complete hardening process
+### Run the complete hardening process
 sudo ./harden.sh
 
 ---
@@ -65,23 +65,23 @@ sudo ./harden.sh
 
 The `sysctl -w` commands reset after reboot. Make your stealth configurations permanent by adding the following to `/etc/sysctl.conf`:
 
-# Add to /etc/sysctl.conf for permanent IPv6 disabling
+### Add to /etc/sysctl.conf for permanent IPv6 disabling
 echo "net.ipv6.conf.all.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.conf
 echo "net.ipv6.conf.default.disable_ipv6 = 1" | sudo tee -a /etc/sysctl.conf
 
-# Apply changes
+### Apply changes
 sudo sysctl -p
 🧹 Artifact Cleaning
 A key part of being an "Invisible Operator" is knowing how to clear your tracks before logging off:
 
-# Clear bash history
+### Clear bash history
 history -c && history -w
 
-# Securely delete temporary files
+### Securely delete temporary files
 shred -zvu /tmp/* 2>/dev/null
 shred -zvu ~/.bash_history
 
-# Wipe system logs (use with caution)
+### Wipe system logs (use with caution)
 sudo journalctl --rotate
 sudo journalctl --vacuum-time=1s
 
@@ -91,22 +91,22 @@ sudo journalctl --vacuum-time=1s
 
 Confirm your "Invisible" status before touching the target network:
 
-# Verify MAC address change
+### Verify MAC address change
 ip a | grep -A 1 ether
 
-# Verify hostname change
+### Verify hostname change
 hostname
 
-# Verify IPv6 is disabled
+### Verify IPv6 is disabled
 sysctl net.ipv6.conf.all.disable_ipv6
 ip a | grep inet6
 
-# Verify network interfaces
+### Verify network interfaces
 ip a
 
 ---
 
-# Check active connections
+## Check active connections
 ss -tuln
 | Action | Command | Verification |
 |--------|---------|--------------|
