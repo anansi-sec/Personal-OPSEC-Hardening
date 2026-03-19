@@ -1,6 +1,5 @@
-# OPSEC Hardening & Stealth Guide
-
-> **Version:** 1.0 (2026 Reference)
+# 🥷 OPSEC Hardening & Stealth Guide
+> **Version:** 1.0 (2026 Reference)  
 > **Target OS:** Kali Linux / Debian-based
 
 This repository serves as a personal reference for hardening a penetration testing environment to remain invisible and maintain high-speed connectivity during engagements.
